@@ -1,0 +1,50 @@
+{% extends "private_messages/base.html" %}
+
+{% load pagination_tags %}
+
+{% block pm_content %}
+    {% autopaginate pm_topics %}
+
+    <form action="{% url private_messages_topic_delete %}" method="post">
+        <table>
+            <tr>
+                <th>Тема</th>
+                <th>Кому адресованно</th>
+                <th>Статус</th>
+                <th>Дата</th>
+                <th>Удалить</th>
+            </tr>
+            {% for topic in pm_topics %}
+                <tr>
+                    <td><a href="{{ topic.get_absolute_url }}">{{ topic.subject }}</a></td>
+                    <td>
+                        {% ifequal topic.sender user %}
+                            {{ topic.recipient }} <span>от меня</span>
+                        {% else %}
+                            <span>Мне от</span> {{ topic.sender }}
+                        {% endifequal %}
+                    </td>
+                    <td>
+                        {% if topic.count_unread_messages %}
+                            {% ifequal topic.last_unread_message.sender user %}
+                                <span class="send">Отправлено</span>
+                            {% else %}
+                                <span class="new">Новое</span>
+                            {% endifequal %}
+                        {% else %}
+                            <span class="read">Прочитано</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ topic.last_sent_at|date:"d M, H:i:s" }}</td>
+                    <td><input type="checkbox" name="topic[]" value="{{ topic.id }}" /></td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <p style="text-align:right;">
+            <input type="submit" value="Удалить" />
+        </p>
+    </form>
+
+    {% paginate %}
+{% endblock %}

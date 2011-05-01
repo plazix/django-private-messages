@@ -1,0 +1,22 @@
+{% extends "private_messages/base.html" %}
+
+{% block pm_content %}
+    <h3>Тема: <span>{{ pm_topic.subject }}</span></h3>
+
+    <form action="{{ pm_topic.get_absolute_url }}" method="post">
+        <p>{{ pm_form.body }}</p>
+        <input type="submit" value="Отправить" />
+    </form>
+
+    <table>
+        {% for message in pm_topic.messages.all %}
+            <tr>
+                <td width="100px">
+                    {{ message.sender.username }}<br />
+                    {{ message.sent_at|date:"d.m.Y H:i" }}
+                </td>
+                <td>{{ message.body }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

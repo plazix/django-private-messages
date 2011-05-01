@@ -1,0 +1,22 @@
+{% extends "private_messages/base.html" %}
+
+{% block pm_content %}
+    <form action="{% url private_messages_new %}" method="post" >
+        <p>
+            <label for="id_recipient">Кому:</label><br/>
+            {{ pm_form.recipient }}
+        </p>
+
+        <p>
+            <label for="id_subject">Тема сообщения:</label><br/>
+            {{ pm_form.subject }}
+        </p>
+
+        <p>
+            <label for="id_body">Текст:</label><br/>
+            {{ pm_form.body }}
+        </p>
+        
+        <input type="submit" value="Отправить">
+    </form>
+{% endblock %}
