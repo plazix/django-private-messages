@@ -2,9 +2,12 @@
 
 from setuptools import setup, find_packages
 
+from private_messages import get_version
+
+
 setup(
     name='django-private-messages',
-    version='0.2.0',
+    version=get_version().replace(' ', '-'),
     description=u'Личные сообщения пользователей.',
     license="BSD License",
     author='Aleksandr Zorin (plazix)',
