@@ -6,6 +6,7 @@ setup(
     name='django-private-messages',
     version='0.2.0',
     description=u'Личные сообщения пользователей.',
+    license="BSD License",
     author='Aleksandr Zorin (plazix)',
     author_email='plazix@gmail.com',
     url='https://github.com/plazix/django-private-messages',
