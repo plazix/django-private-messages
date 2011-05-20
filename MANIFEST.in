@@ -1,0 +1,2 @@
+include LICENSE
+recursive-include private_messages/templates *
