@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2>Личные сообщения</h2>
-    <div class="span-20">
-        {% block pm_content %}{% endblock %}
-    </div>
-    <div class="span-4 last">
-        <a href="{% url private_messages %}">Личные сообщения</a>
-        <a href="{% url private_messages_new %}">Написать</a>
+    <div class="row">
+        <h2>Личные сообщения</h2>
+
+        {% block pm_menu %}{% endblock %}
+
+        <div class="span-20">
+            {% block pm_content %}{% endblock %}
+        </div>
     </div>
 {% endblock %}

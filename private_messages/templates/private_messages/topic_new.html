@@ -1,22 +1,43 @@
 {% extends "private_messages/base.html" %}
 
+{% block pm_menu %}
+    <ul class="nav nav-tabs">
+        <li><a href="{% url private_messages %}">Личные сообщения</a></li>
+        <li class="active"><a href="{% url private_messages_new %}">Написать</a></li>
+    </ul>
+{% endblock %}
+
 {% block pm_content %}
-    <form action="{% url private_messages_new %}" method="post" >
-        <p>
-            <label for="id_recipient">Кому:</label><br/>
-            {{ pm_form.recipient }}
-        </p>
+    {% if pm_form %}
+        <div class="alert alert-error">
+            {{ pm_form.errors }}
+        </div>
+    {% endif %}
 
-        <p>
-            <label for="id_subject">Тема сообщения:</label><br/>
-            {{ pm_form.subject }}
-        </p>
+    <form action="{% url private_messages_new %}" method="post" class="form-horizontal">
+        <fieldset>
+            <div class="control-group">
+                <label class="control-label" for="id_recipient">Кому:</label>
+                <div class="controls">
+                    {{ pm_form.recipient }}
+                </div>
+            </div>
 
-        <p>
-            <label for="id_body">Текст:</label><br/>
-            {{ pm_form.body }}
-        </p>
+            <div class="control-group">
+                <label class="control-label" for="id_subject">Тема сообщения:</label>
+                <div class="controls">
+                    {{ pm_form.subject }}
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="id_body">Текст:</label>
+                <div class="controls">
+                    {{ pm_form.body }}
+                </div>
+            </div>
+        </fieldset>
         
-        <input type="submit" value="Отправить">
+        <input type="submit" class="btn" value="Отправить">
     </form>
 {% endblock %}

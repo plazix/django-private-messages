@@ -1,22 +1,40 @@
 {% extends "private_messages/base.html" %}
 
+{% block pm_menu %}
+    <ul class="nav nav-tabs">
+        <li><a href="{% url private_messages %}">Личные сообщения</a></li>
+        <li><a href="{% url private_messages_new %}">Написать</a></li>
+        <li class="active"><a href="#">{{ pm_topic.subject }}</a></li>
+    </ul>
+{% endblock %}
+
 {% block pm_content %}
-    <h3>Тема: <span>{{ pm_topic.subject }}</span></h3>
+    <div class="row"><div class="span12">
+        <h3>Тема: {{ pm_topic.subject }}</h3>
 
-    <form action="{{ pm_topic.get_absolute_url }}" method="post">
-        <p>{{ pm_form.body }}</p>
-        <input type="submit" value="Отправить" />
-    </form>
+        <form action="{{ pm_topic.get_absolute_url }}" method="post">
+            <fieldset>
+                <div class="control-group">
+                    <label class="control-label" for="id_body">Текст:</label>
+                    <div class="controls">
+                        {{ pm_form.body }}
+                    </div>
+                </div>
+            </fieldset>
 
-    <table>
-        {% for message in pm_topic.messages.all %}
-            <tr>
-                <td width="100px">
-                    {{ message.sender.username }}<br />
-                    {{ message.sent_at|date:"d.m.Y H:i" }}
-                </td>
-                <td>{{ message.body }}</td>
-            </tr>
-        {% endfor %}
-    </table>
+            <input type="submit" class="btn" value="Отправить">
+        </form>
+
+        <table class="table" width="100%">
+            {% for message in pm_topic.messages.all %}
+                <tr>
+                    <td width="100px">
+                        {{ message.sender.username }}<br />
+                        {{ message.sent_at|date:"d.m.Y H:i" }}
+                    </td>
+                    <td>{{ message.body }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div></div>
 {% endblock %}
