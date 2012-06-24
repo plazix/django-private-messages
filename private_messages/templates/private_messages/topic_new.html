@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block pm_content %}
-    {% if pm_form %}
+    {% if pm_form.errors %}
         <div class="alert alert-error">
             {{ pm_form.errors }}
         </div>
