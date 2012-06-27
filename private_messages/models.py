@@ -4,6 +4,7 @@ from datetime import datetime
 
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
 
 
 class TopicManager(models.Manager):
@@ -43,9 +44,9 @@ class MessageManager(models.Manager):
 
 
 class Topic(models.Model):
-    sender = models.ForeignKey(User, verbose_name=u'Отправитель', related_name='pm_topics_sender')
-    recipient = models.ForeignKey(User, verbose_name=u'Получатель', related_name='pm_topics_recipient')
-    subject = models.CharField(u'Тема', max_length=255)
+    sender = models.ForeignKey(User, verbose_name=_('Sender'), related_name='pm_topics_sender')
+    recipient = models.ForeignKey(User, verbose_name=_('Recipient'), related_name='pm_topics_recipient')
+    subject = models.CharField(_('Subject'), max_length=255)
     last_sent_at = models.DateTimeField()
 
     objects = TopicManager()
@@ -58,7 +59,7 @@ class Topic(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('private_messages_topic', [self.pk])
+        return 'private_messages_topic', [self.pk]
 
     def count_messages(self):
         return self.messages.count()
@@ -75,10 +76,10 @@ class Topic(models.Model):
 
 class Message(models.Model):
     topic = models.ForeignKey(Topic, related_name='messages')
-    sender = models.ForeignKey(User, verbose_name=u'Автор')
-    body = models.TextField(u'Сообщение')
-    sent_at = models.DateTimeField(u'Отправлено', auto_now_add=True)
-    read_at = models.DateTimeField(u'Прочитано', blank=True, null=True, default=None)
+    sender = models.ForeignKey(User, verbose_name=_('Sender'))
+    body = models.TextField(_('Message'))
+    sent_at = models.DateTimeField(_('Posted'), auto_now_add=True)
+    read_at = models.DateTimeField(_('Read'), blank=True, null=True, default=None)
 
     objects = MessageManager()
 
