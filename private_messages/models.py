@@ -2,28 +2,25 @@
 
 from datetime import datetime
 
-from django.contrib.auth.models import User
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from conf import settings
+
 
 class TopicManager(models.Manager):
-#    def get_query_set(self):
-#        # todo стоит ли так делать?
-#        return self.select_related('sender', 'recipient')
-
     def by_user(self, user):
-        '''
+        """
         Все топики выбранного пользователя
-        '''
+        """
         return self.filter(models.Q(sender=user) | models.Q(recipient=user))
 
 
 class MessageManager(models.Manager):
     def count_unread(self, user, topic=None):
-        '''
+        """
         Количество непрочитанных сообщений
-        '''
+        """
         qs = self.filter(models.Q(topic__recipient=user) | models.Q(topic__sender=user), read_at__exact=None).\
                 exclude(sender=user)
         if topic is not None:
@@ -31,21 +28,21 @@ class MessageManager(models.Manager):
         return qs.count()
 
     def by_topic(self, topic):
-        '''
+        """
         Все сообщение в топике
-        '''
+        """
         return self.select_related('sender').filter(topic=topic)
 
     def mark_read(self, user, topic):
-        '''
+        """
         Помечаем сообщения как прочитанные
-        '''
+        """
         self.exclude(sender=user).filter(topic=topic, read_at__exact=None).update(read_at=datetime.now())
 
 
 class Topic(models.Model):
-    sender = models.ForeignKey(User, verbose_name=_('Sender'), related_name='pm_topics_sender')
-    recipient = models.ForeignKey(User, verbose_name=_('Recipient'), related_name='pm_topics_recipient')
+    sender = models.ForeignKey(settings.USER_MODEL, verbose_name=_('Sender'), related_name='pm_topics_sender')
+    recipient = models.ForeignKey(settings.USER_MODEL, verbose_name=_('Recipient'), related_name='pm_topics_recipient')
     subject = models.CharField(_('Subject'), max_length=255)
     last_sent_at = models.DateTimeField()
 
@@ -76,7 +73,7 @@ class Topic(models.Model):
 
 class Message(models.Model):
     topic = models.ForeignKey(Topic, related_name='messages')
-    sender = models.ForeignKey(User, verbose_name=_('Sender'))
+    sender = models.ForeignKey(settings.USER_MODEL, verbose_name=_('Sender'))
     body = models.TextField(_('Message'))
     sent_at = models.DateTimeField(_('Posted'), auto_now_add=True)
     read_at = models.DateTimeField(_('Read'), blank=True, null=True, default=None)
