@@ -12,7 +12,7 @@
     <div class="row"><div class="span12">
         <h3>Тема: {{ pm_topic.subject }}</h3>
 
-        <form action="{{ pm_topic.get_absolute_url }}" method="post">
+        <form action="{{ pm_topic.get_absolute_url }}" method="post">{% csrf_token %}
             <fieldset>
                 <div class="control-group">
                     <label class="control-label" for="id_body">Текст:</label>

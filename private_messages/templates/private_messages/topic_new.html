@@ -14,7 +14,7 @@
         </div>
     {% endif %}
 
-    <form action="{% url private_messages_new %}" method="post" class="form-horizontal">
+    <form action="{% url private_messages_new %}" method="post" class="form-horizontal">{% csrf_token %}
         <fieldset>
             <div class="control-group">
                 <label class="control-label" for="id_recipient">Кому:</label>
